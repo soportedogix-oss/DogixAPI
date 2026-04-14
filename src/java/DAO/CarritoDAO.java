@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CarritoDAO {
 
-    // 🔥 AGREGAR O ACTUALIZAR
     public boolean agregarOActualizar(int idUsuario, int idProducto, int cantidad) {
 
         String check = "SELECT id_carrito, cantidad FROM carrito WHERE id_usuario=? AND id_producto=?";
@@ -18,7 +17,6 @@ public class CarritoDAO {
 
         try (Connection con = Conexion.conectar()) {
 
-            // 🔍 VALIDAR PRODUCTO EXISTE
             String stockSql = "SELECT stock FROM productos WHERE id_producto=?";
             PreparedStatement psStock = con.prepareStatement(stockSql);
             psStock.setInt(1, idProducto);
@@ -26,13 +24,11 @@ public class CarritoDAO {
             ResultSet rsStock = psStock.executeQuery();
 
             if (!rsStock.next()) {
-                System.out.println("❌ Producto no existe");
                 return false;
             }
 
             int stock = rsStock.getInt("stock");
 
-            // 🔍 EXISTE EN CARRITO
             try (PreparedStatement ps1 = con.prepareStatement(check)) {
 
                 ps1.setInt(1, idUsuario);
@@ -48,7 +44,6 @@ public class CarritoDAO {
                     int nuevaCantidad = actual + cantidad;
 
                     if (nuevaCantidad > stock) {
-                        System.out.println("❌ Excede stock");
                         return false;
                     }
 
@@ -63,7 +58,6 @@ public class CarritoDAO {
                 } else {
 
                     if (cantidad > stock) {
-                        System.out.println("❌ Excede stock");
                         return false;
                     }
 
@@ -79,12 +73,10 @@ public class CarritoDAO {
             }
 
         } catch (Exception e) {
-            System.out.println("❌ Error agregar carrito: " + e.getMessage());
             return false;
         }
     }
 
-    // 🔥 LISTAR (CORREGIDO TOTAL 🔥)
     public List<Carrito> listar(int idUsuario) {
 
         List<Carrito> lista = new ArrayList<>();
@@ -111,7 +103,6 @@ public class CarritoDAO {
                 c.setIdProducto(rs.getInt("id_producto"));
                 c.setCantidad(rs.getInt("cantidad"));
 
-                // 🔥 PROTECCIÓN NULL (CLAVE)
                 String nombre = rs.getString("nombreProducto");
                 String imagen = rs.getString("imagen");
 
@@ -123,16 +114,12 @@ public class CarritoDAO {
                 lista.add(c);
             }
 
-            System.out.println("🟢 Carrito size: " + lista.size());
-
         } catch (Exception e) {
-            System.out.println("❌ Error listar carrito: " + e.getMessage());
         }
 
         return lista;
     }
 
-    // 🔥 ELIMINAR
     public boolean eliminar(int idCarrito) {
 
         String sql = "DELETE FROM carrito WHERE id_carrito=?";
@@ -144,12 +131,10 @@ public class CarritoDAO {
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
-            System.out.println("❌ Error eliminar: " + e.getMessage());
             return false;
         }
     }
 
-    // 🔥 LIMPIAR
     public boolean limpiarCarrito(int idUsuario) {
 
         String sql = "DELETE FROM carrito WHERE id_usuario=?";
@@ -161,7 +146,6 @@ public class CarritoDAO {
             return ps.executeUpdate() >= 0;
 
         } catch (Exception e) {
-            System.out.println("❌ Error limpiar carrito: " + e.getMessage());
             return false;
         }
     }

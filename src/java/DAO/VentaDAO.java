@@ -9,7 +9,6 @@ import java.util.List;
 
 public class VentaDAO {
 
-    // 🔥 CHECKOUT (ya lo tenías bien)
     public boolean procesarCompra(int idUsuario) {
 
         Connection con = null;
@@ -58,7 +57,6 @@ public class VentaDAO {
 
                 double total = precio * cantidad;
 
-                // 🧾 INSERT VENTA
                 String insert = "INSERT INTO ventas(id_usuario, id_producto, cantidad, total) VALUES(?,?,?,?)";
                 PreparedStatement ps2 = con.prepareStatement(insert);
 
@@ -72,7 +70,6 @@ public class VentaDAO {
                     return false;
                 }
 
-                // 🔒 UPDATE STOCK
                 String update = "UPDATE productos SET stock = stock - ? WHERE id_producto=? AND stock >= ?";
                 PreparedStatement ps3 = con.prepareStatement(update);
 
@@ -86,7 +83,6 @@ public class VentaDAO {
                 }
             }
 
-            // 🧹 LIMPIAR CARRITO
             String limpiar = "DELETE FROM carrito WHERE id_usuario=?";
             PreparedStatement ps4 = con.prepareStatement(limpiar);
             ps4.setInt(1, idUsuario);
@@ -97,12 +93,11 @@ public class VentaDAO {
 
         } catch (Exception e) {
             try { if (con != null) con.rollback(); } catch (Exception ex) {}
-            e.printStackTrace(); // 🔥 IMPORTANTE
+            e.printStackTrace();
             return false;
         }
     }
 
-    // 🔥 LISTAR VENTAS (CORREGIDO TOTAL)
     public List<Venta> listarPorUsuario(int idUsuario) {
 
         List<Venta> lista = new ArrayList<>();
@@ -111,7 +106,7 @@ public class VentaDAO {
 
             String sql = "SELECT v.*, p.nombre, p.imagen " +
                          "FROM ventas v " +
-                         "LEFT JOIN productos p ON v.id_producto = p.id_producto " + // 🔥 FIX
+                         "LEFT JOIN productos p ON v.id_producto = p.id_producto " +
                          "WHERE v.id_usuario=?";
 
             PreparedStatement ps = con.prepareStatement(sql);
@@ -128,7 +123,6 @@ public class VentaDAO {
                 v.setTotal(rs.getDouble("total"));
                 v.setFecha(rs.getString("fecha"));
 
-                // 🔥 PROTECCIÓN NULL
                 String nombre = rs.getString("nombre");
                 String imagen = rs.getString("imagen");
 
@@ -139,7 +133,7 @@ public class VentaDAO {
             }
 
         } catch (Exception e) {
-            e.printStackTrace(); // 🔥 CLAVE PARA DEBUG
+            e.printStackTrace();
         }
 
         return lista;

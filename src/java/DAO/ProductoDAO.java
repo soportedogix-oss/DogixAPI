@@ -8,7 +8,6 @@ import java.util.*;
 
 public class ProductoDAO {
 
-    // 🔥 LISTAR
     public List<Producto> listar() {
         List<Producto> lista = new ArrayList<>();
 
@@ -32,13 +31,12 @@ public class ProductoDAO {
             }
 
         } catch (Exception e) {
-            System.out.println("❌ Error listar: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         return lista;
     }
 
-    // 🔥 NUEVO: OBTENER POR ID (IMPORTANTE)
     public Producto obtenerPorId(int id) {
 
         String sql = "SELECT * FROM productos WHERE id_producto=?";
@@ -63,13 +61,12 @@ public class ProductoDAO {
             }
 
         } catch (Exception e) {
-            System.out.println("❌ Error obtener: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         return null;
     }
 
-    // 🔥 INSERTAR
     public boolean insertar(String nombre, String descripcion, double precio, String imagen, int stock) {
 
         String sql = "INSERT INTO productos(nombre, descripcion, precio, imagen, stock) VALUES(?,?,?,?,?)";
@@ -85,17 +82,14 @@ public class ProductoDAO {
 
             int filas = ps.executeUpdate();
 
-            System.out.println("Filas insertadas: " + filas);
-
             return filas > 0;
 
         } catch (Exception e) {
-            System.out.println("❌ Error insertar: " + e.getMessage());
+            System.out.println(e.getMessage());
             return false;
         }
     }
 
-    // 🔥 ACTUALIZAR
     public boolean actualizar(int id, String nombre, String descripcion, double precio, String imagen, int stock) {
 
         String sql = "UPDATE productos SET nombre=?, descripcion=?, precio=?, imagen=?, stock=? WHERE id_producto=?";
@@ -112,17 +106,14 @@ public class ProductoDAO {
 
             int filas = ps.executeUpdate();
 
-            System.out.println("Filas actualizadas: " + filas);
-
             return filas > 0;
 
         } catch (Exception e) {
-            System.out.println("❌ Error actualizar: " + e.getMessage());
+            System.out.println(e.getMessage());
             return false;
         }
     }
 
-    // 🔥 ELIMINAR
     public boolean eliminar(int id) {
 
         String sql = "DELETE FROM productos WHERE id_producto=?";
@@ -134,12 +125,10 @@ public class ProductoDAO {
 
             int filas = ps.executeUpdate();
 
-            System.out.println("Filas eliminadas: " + filas);
-
             return filas > 0;
 
         } catch (Exception e) {
-            System.out.println("❌ Error eliminar: " + e.getMessage());
+            System.out.println(e.getMessage());
             return false;
         }
     }

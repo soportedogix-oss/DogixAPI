@@ -1,0 +1,11 @@
+/build/
+/nbproject/private/
+*.class
+
+dist/*
+!dist/
+!dist/DogixAD.war
+
+*.log
+.DS_Store
+Thumbs.db

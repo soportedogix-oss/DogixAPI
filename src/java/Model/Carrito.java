@@ -3,7 +3,7 @@ package Model;
 public class Carrito {
 
     private int idCarrito;
-    private int idUsuario; // 🔥 ESTE FALTABA
+    private int idUsuario; 
     private int idProducto;
     private int cantidad;
 
